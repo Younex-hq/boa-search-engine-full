@@ -1,0 +1,30 @@
+{
+  // "css.validate": false,
+  // "scss.validate": false,
+  // "postcss.validate": false,
+
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  // for tailwind-fold plugin :
+  "tailwind-fold.autoFold": false,
+  "tailwind-fold.foldStyle": "QUOTES",
+  "tailwind-fold.foldLengthThreshold": 11,
+
+  // for only .jsx
+  "[typescriptreact]": {
+    // word wrap :
+    // "editor.wordWrap": "off",
+
+    // sugestion for strings (hellps with classNames)
+    "editor.quickSuggestions": {
+      "strings": "on"
+    }
+  },
+  "github.copilot.enable": {
+    // "javascriptreact": false, // false: this will stop inline suggestions from Copilot in .jsx files
+    // "typescriptreact": false, // false: this will stop inline suggestions from Copilot in .tsx files
+    // "typescript": false
+  }
+}

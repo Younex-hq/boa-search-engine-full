@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    overflow-x: hidden;
+  }
+  body {
+    font-family: "inter", "Open Sans", sans-serif;
+    font-weight: 500;
+  }
+  li {
+    overflow-x: hidden;
+  }
+}
+
+@theme {
+  --color-boa-blue: #254375;
+  --color-boa-gold: #bc9e6e;
+  --color-boa-sky: #4b94cf;
+  --color-boa-nightSky: #063765;
+
+  /* font : */
+  --font-weight-normal: 400;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}

@@ -1,0 +1,5 @@
+!private
+!private/wolf-data/
+!private/wolf-data/*
+!public/
+!.gitignore
