@@ -30,6 +30,13 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+      - AI_SOURCE=${AI_SOURCE}
+      - AI_MAX_DOCUMENTS=${AI_MAX_DOCUMENTS}
+      - AI_URL=${AI_URL}
+      - AI_MODEL=${AI_MODEL}
+      - AI_TIMEOUT=${AI_TIMEOUT}
+      - GEMINI_MODEL=${GEMINI_MODEL}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
 
   # Frontend Admin
   frontend-admin:
