@@ -55,13 +55,13 @@ This document explains how to build, run, and operate the BOA Search Engine stac
    ```
 
 3. Access services:
-   - Web gateway: `http://localhost`
-     - Public UI: `http://localhost/`
-     - Admin UI: `http://localhost/admin`
+   - Web gateway: `http://localhost:8080`
+     - Public UI: `http://localhost:8080/`
+     - Admin UI: `http://localhost:8080/admin`
      - API:
-       - Login: `POST http://localhost/api/login`
-       - Logout: `POST http://localhost/api/logout`
-       - API v1: `http://localhost/api/v1/...`
+       - Login: `POST http://localhost:8080/api/login`
+       - Logout: `POST http://localhost:8080/api/logout`
+       - API v1: `http://localhost:8080/api/v1/...`
    - Ollama API (direct): `http://localhost:11434`
 
 ## First‑Run Data & Credentials
@@ -117,7 +117,7 @@ Note: Set `DB_DATABASE=boa_searchengine_d1` in your root `.env` so the backend c
 - The backend reads these via `backend/config/ai.php`.
 
 ## Service Map
-- `web` (Nginx gateway): listens on `80`, routes `/api/*` via FastCGI to `backend:9000`, proxies `/admin` and `/` to frontend containers.
+- `web` (Nginx gateway): listens on `8080` (host) → `80` (container), routes `/api/*` via FastCGI to `backend:9000`, proxies `/admin` and `/` to frontend containers.
 - `backend` (php-fpm 8.2): listens on `9000` internally.
 - `database` (MySQL 8): listens on `3306` and initializes DB/tables/seeders on first run.
 - `frontend-admin`: Nginx serving admin UI on container port `80` (exposed as `9080`).
@@ -133,14 +133,14 @@ Note: Set `DB_DATABASE=boa_searchengine_d1` in your root `.env` so the backend c
 
 - API login test (admin):
   ```bash
-  curl -X POST http://localhost/api/login \
+  curl -X POST http://localhost:8080/api/login \
     -H 'Content-Type: application/json' \
     -d '{"email":"admin@mail.com","password":"password"}'
   ```
 
 - Search test (API v1):
   ```bash
-  curl http://localhost/api/v1/search/hello
+  curl http://localhost:8080/api/v1/search/hello
   ```
 
 - Ollama health:
