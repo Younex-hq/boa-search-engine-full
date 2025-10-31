@@ -189,7 +189,7 @@ export default function AddUserPage() {
                         password: e.target.value,
                       }))
                     }
-                    placeholder="Update Password"
+                    placeholder="mot de passe"
                   />
                   <InputPasswordToggle
                     id="confirmPassword"

@@ -139,7 +139,7 @@ export default function ProfileEditDialog({ children }: ProfileDialogProps) {
               <InputPasswordToggle
                 label="Mot de passe"
                 value={password}
-                placeholder="Non affiché"
+                placeholder="Changer le mot de passe"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>

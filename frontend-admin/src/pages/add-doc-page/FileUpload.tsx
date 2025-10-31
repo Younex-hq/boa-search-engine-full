@@ -74,7 +74,8 @@ const FileUPload = ({ onFileChange }: FileUploadProps) => {
             </div>
             <p className="mb-1.5 text-sm font-medium">Upload PDF</p>
             <p className="text-muted-foreground text-xs">
-              Drag & drop or click to browse (max. {formatBytes(maxSize)})
+              Glisser-déposer ou cliquer pour naviguer (max.{" "}
+              {formatBytes(maxSize)})
             </p>
           </div>
         </div>

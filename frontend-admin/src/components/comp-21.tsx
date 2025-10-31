@@ -6,11 +6,13 @@ import { SearchIcon } from "lucide-react";
 
 type InputWithButtonProps = {
   lable?: string;
+  className?: string;
   handleSearch: (text: string) => void;
 };
 
 export default function InputWithButton({
   lable,
+  className,
   handleSearch,
   ...props
 }: InputWithButtonProps) {
@@ -21,11 +23,11 @@ export default function InputWithButton({
   return (
     <div className="*:not-first:mt-2 sm:max-w-lg lg:w-lg">
       {lable && <Label htmlFor={id}>Input with end button</Label>}
-      <div className="flex rounded-md shadow-xs">
+      <div className={`flex rounded-md shadow-xs ${className}`}>
         <Input
           id={id}
           className="-me-px flex-1 rounded-e-none border-r-0 focus-visible:z-10"
-          placeholder="Search.."
+          placeholder="Rechercher..."
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

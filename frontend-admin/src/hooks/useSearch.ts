@@ -6,4 +6,7 @@ export const useSearchDocs = (query: string, enabled: boolean) =>
     queryKey: ["search", query],
     queryFn: () => searchDocs(query),
     enabled: enabled && !!query, // Only run query if enabled and query is not empty
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });

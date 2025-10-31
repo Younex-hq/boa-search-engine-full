@@ -45,6 +45,8 @@ import {
 
 import { EllipsisVerticalIcon, PenIcon, Trash2Icon, XIcon } from "lucide-react";
 
+import { useLocation } from "react-router";
+
 export type ApiUser = {
   id: number;
   type: string;
@@ -84,6 +86,10 @@ export default function UsersPage() {
   const { mutate: restoreUser } = useRestoreUser();
   const [editingUser, setEditingUser] = useState<ApiUser | null>(null);
 
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const highlightEmail = searchParams.get("highlightEmail")?.trim();
+
   const handleEdit = (user: ApiUser) => {
     setEditingUser(user);
   };
@@ -104,7 +110,8 @@ export default function UsersPage() {
       ?.slice()
       .sort(
         (a, b) => Number(b.attributes.isActive) - Number(a.attributes.isActive),
-      ) ?? [];
+      )
+      .filter((user) => user.id !== 1) ?? []; // don't show the user with id 1, the user that holds the forgot password notifications
 
   return (
     <>
@@ -120,12 +127,12 @@ export default function UsersPage() {
             <TableHeader className="bg-boa-sky/30">
               <TableRow className="hover:bg-transparent">
                 <TableHead className="w-[30px]"></TableHead>
-                <TableHead>firstName</TableHead>
-                <TableHead>lastName</TableHead>
-                <TableHead>email</TableHead>
-                <TableHead>isAdmin</TableHead>
-                <TableHead>direction</TableHead>
-                <TableHead>active</TableHead>
+                <TableHead>Prénom</TableHead>
+                <TableHead>Nom</TableHead>
+                <TableHead>E-mail</TableHead>
+                <TableHead>Admin / Utilisateur</TableHead>
+                <TableHead>Direction</TableHead>
+                <TableHead>Actif</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -133,7 +140,7 @@ export default function UsersPage() {
                 return (
                   <TableRow
                     key={user.id}
-                    className={`even:bg-boa-sky/10 hover:bg-boa-sky/30 ${user.attributes.isActive ? "" : "font-light"} `}
+                    className={`even:bg-boa-sky/10 hover:bg-boa-sky/30 ${user.attributes.isActive ? "" : "font-light"} ${user.attributes.email.trim() == highlightEmail ? "border-boa-gold border-3" : ""}`}
                   >
                     <TableHead className="w-[30px]">
                       <DropDownMenuUserInfo
@@ -149,13 +156,13 @@ export default function UsersPage() {
                     <TableCell
                       className={`${user.attributes.isAdmin ? "font-bold" : ""}`}
                     >
-                      {user.attributes.isAdmin ? "Admin" : "User"}
+                      {user.attributes.isAdmin ? "Admin" : "Utilisateur"}
                     </TableCell>
                     <TableCell>
                       {user.relationships?.direction?.data?.name}
                     </TableCell>
                     <TableCell>
-                      {user.attributes.isActive ? "Active" : "Deleted"}
+                      {user.attributes.isActive ? "Actif" : "Supp"}
                     </TableCell>
                   </TableRow>
                 );
@@ -403,7 +410,7 @@ export function EditUserInfo({ user, onEdit }: EditUserInfoProps) {
               />
             </div>
             <div className="grid gap-1">
-              <Label htmlFor="isAdmin">Admin</Label>
+              <Label htmlFor="isAdmin">Admin ?</Label>
               <RadioGroup
                 defaultValue={formData.isAdmin ? "true" : "false"}
                 onValueChange={(value) => handleRadioChange("isAdmin", value)}
@@ -415,18 +422,18 @@ export function EditUserInfo({ user, onEdit }: EditUserInfoProps) {
                 </div>
                 <div className="hover:bg-boa-sky/5 flex items-center space-x-2 rounded-full">
                   <RadioGroupItem value="true" id="YesAdmin" />
-                  <Label htmlFor="YesAdmin">Yes</Label>
+                  <Label htmlFor="YesAdmin">Oui</Label>
                 </div>
               </RadioGroup>
             </div>
             <div className="grid gap-2">
               <InputPasswordToggle
-                label="Password"
+                label="Mot de passe"
                 value={formData.password}
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, password: e.target.value }))
                 }
-                placeholder="Update Password"
+                placeholder="Changer le mot de passe"
               />
             </div>
           </div>

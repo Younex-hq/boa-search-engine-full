@@ -145,7 +145,7 @@ export default function DirectionPage() {
     <>
       <PageHeader
         title="Les Directions"
-        info="Les Directions de 'Bank-of-Algeria' that some of the documents are from"
+        info="Les directions de la Banque d'Algérie"
       />
       <div className="m-auto flex w-[100vw] flex-wrap justify-center gap-4 sm:my-5 sm:w-full">
         <Card className="relative m-5 w-lg bg-gradient-to-br from-white via-white to-gray-50 sm:w-full sm:max-w-lg">

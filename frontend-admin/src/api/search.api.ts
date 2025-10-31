@@ -1,5 +1,4 @@
 import api from "./axios";
-import { type Document } from "./doc.api";
 
 export interface SearchResult {
   type: string;
@@ -34,6 +33,7 @@ export interface SearchResponse {
     total_results: number;
     query: string;
     normalized_query: string;
+    ai_response?: string;
   };
 }
 

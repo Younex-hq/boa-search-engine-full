@@ -6,6 +6,8 @@ import {
   FileClockIcon,
   BellIcon,
   BookmarkIcon,
+  FileSpreadsheetIcon,
+  FilePlus2Icon,
 } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/shadcn/card";
 import { useNavigate } from "react-router";
@@ -26,19 +28,26 @@ const SectionCards = () => {
       icon: BellIcon,
       title: "Notifications",
       description:
-        "Notifications des utilisateurs, comme une demande de réinitialisation de mot de passe",
+        "Les demandes de réinitialisation des mot de passe oublié pour les utilisateurs.",
       path: "/notifications",
+    },
+    {
+      icon: FilePlus2Icon,
+      title: "Ajouter un Document",
+      description:
+        "Ajouter des documents PDF, textes réglementair et lettres communes",
+      path: "/docs/add",
     },
     {
       icon: FileClockIcon,
       title: "Documents",
-      description: "Voir les derniers documents ajoutés",
+      description: "Voir les derniers documents ajoutés.",
       path: "/docs",
     },
     {
       icon: BookmarkIcon,
       title: "Docs enregistré",
-      description: "Vos documents enregistrés pour un accès rapide",
+      description: "Vos documents enregistrés pour un accès rapide.",
       path: "/save",
     },
     {
@@ -49,15 +58,15 @@ const SectionCards = () => {
       path: "/search",
     },
     {
-      icon: UserRoundCogIcon,
-      title: "Gérer les utilisateurs",
-      description: "Ajoutez, modifiez ou supprimez des comptes",
-      path: "/users",
+      icon: FileSpreadsheetIcon,
+      title: "Types et Etats",
+      description: "Voir les différents types et états de documents possibles.",
+      path: "/docs/props",
     },
     {
       icon: NetworkIcon,
       title: "les directions",
-      description: "Ajoutez, modifiez ou supprimez les directions",
+      description: "Ajoutez, modifiez ou supprimez les directions.",
       path: "/directions",
     },
     // {
@@ -72,10 +81,7 @@ const SectionCards = () => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:gap-6 md:m-auto md:w-[80%] md:[grid-template-columns:repeat(auto-fit,minmax(250px,1fr))]">
       {Cards.filter(
-        (card) =>
-          user?.is_admin ||
-          (card.title !== "Notifications" &&
-            card.title !== "Gérer les utilisateurs"), // don't show Notifications card
+        (card) => user?.is_admin || card.title !== "Notifications", // don't show notifications card
       ).map((card) => (
         <Card
           key={card.title}

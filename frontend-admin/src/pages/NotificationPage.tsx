@@ -15,20 +15,35 @@ import {
 import type { Notification } from "@/api/notification.api";
 import LoadingSkelaton from "@/components/loading/LoadingSkelaton";
 import PageHeader from "@/layouts/PageTitleHeader";
+import { useNavigate } from "react-router";
 
 const extractEmail = (content: string) => {
-  const match = content.match(/\[\[(.*?)\]\]/);
+  const match = content.match(/\s*\[\[(.*?)\]\]\s*/);
   return match ? match[1] : "";
 }; // extract email from the content, email is between [[...]]
 
 export default function NotificationPage() {
   const { data: notificationsResponse, isLoading } = useGetNotifications();
   const updateNotificationMutation = useUpdateNotification();
+  const navigate = useNavigate();
 
-  const handleUpdateNotification = (id: number, isRead: boolean) => {
-    updateNotificationMutation.mutate({ id, payload: { isRead: !isRead } });
+  const handleUpdateNotification = (
+    id: number,
+    isRead: boolean,
+    email: string,
+  ) => {
+    updateNotificationMutation.mutate(
+      { id, payload: { isRead: !isRead } },
+      {
+        onSuccess: () => {
+          if (!isRead) {
+            // Only navigate if changing from unread to read (i.e., "Changer" button)
+            navigate(`/users?highlightEmail=${encodeURIComponent(email)}`);
+          }
+        },
+      },
+    );
   };
-
   const notifications = notificationsResponse?.data || [];
 
   const doneNotifications = notifications.filter(
@@ -43,7 +58,7 @@ export default function NotificationPage() {
     <div>
       <PageHeader
         title="Notifications"
-        info="Les notifications « Public » sont des demandes de modification de mot de passe par les utilisateurs."
+        info="Les demandes de réinitialisation des mot de passe oublié pour les utilisateurs."
       />
       <div className="grid w-[100vw] justify-center md:w-[100%]">
         {isLoading ? (
@@ -52,7 +67,7 @@ export default function NotificationPage() {
           <Table className="mx-4 w-[100vw] rounded-2xl bg-white sm:w-4xl">
             <TableHeader className="bg-boa-sky/30">
               <TableRow className="hover:bg-transparent">
-                <TableHead className="rounded-tl-2xl">Nom Complet</TableHead>
+                <TableHead className="rounded-tl-2xl"></TableHead>
                 <TableHead>E-mail</TableHead>
                 <TableHead>Message</TableHead>
                 <TableHead className="bg-red-388 rounded-tr-2xl text-center">
@@ -68,7 +83,7 @@ export default function NotificationPage() {
 
                 const fullName =
                   authorId === 1
-                    ? "mp. Oublié"
+                    ? "MP Oublié"
                     : `${item.relationships.author.data.firstName}. ${item.relationships.author.data.lastName}`;
                 const email =
                   authorId === 1
@@ -97,10 +112,10 @@ export default function NotificationPage() {
                       <Button
                         variant={isRead ? "secondary" : "default"}
                         onClick={() =>
-                          handleUpdateNotification(item.id, isRead)
+                          handleUpdateNotification(item.id, isRead, email)
                         }
                       >
-                        {isRead ? "Fait" : "en cours"}
+                        {isRead ? "Fait" : "Changer"}
                       </Button>
                       <p className="absolute hidden text-xs">{item.id}</p>
                     </TableCell>

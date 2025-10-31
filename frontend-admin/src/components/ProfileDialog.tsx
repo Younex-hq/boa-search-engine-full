@@ -25,7 +25,7 @@ export default function ProfileDialog({ children }: ProfileDialogProps) {
           <DialogTitle className="flex items-center gap-3 border-b-2 pb-3 text-2xl">
             <UserRoundIcon className="text-boa-blue" />
             <div className="from-boa-blue to-boa-sky via-boa-sky bg-gradient-to-r bg-clip-text text-transparent">
-              Infos du profil
+              Infos de profil
             </div>
           </DialogTitle>
           <DialogDescription className="text-black">
