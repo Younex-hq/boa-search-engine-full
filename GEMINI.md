@@ -1,5 +1,7 @@
 # GEMINI.md
 
+**Note to Gemini:** Keep this file updated with the context of each task you perform.
+
 ## Project Overview
 
 This project is a document search engine with a web interface. It's a full-stack application with a separate frontend and backend.
@@ -104,3 +106,11 @@ To run the public frontend development server, you need to have Node.js installe
 *   The admin frontend is in the `frontend-admin` directory and the main dashboard page is `src/pages/Dashboard.tsx`.
 *   The public frontend is in the `frontend-public` directory and the main search page is `src/pages/Home.jsx`.
 *   Both frontends use TanStack Query to manage server state and cache data from the backend.
+
+## Development Log
+
+### 2025-10-30
+
+*   **Docker Configuration:**
+    *   Created a root `.env` file to manage environment variables for Docker Compose. This includes database credentials and AI service configurations.
+    *   Configured the `frontend-admin` and `frontend-public` services to communicate with the backend through the Nginx reverse proxy. Created `.env` files in each frontend directory with relative API URLs (`/api/` and `/api/v1`). This resolves issues with hardcoded IP addresses and ensures proper service communication within the Docker network.

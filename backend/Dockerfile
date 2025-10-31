@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY composer.json composer.lock ./
 
-RUN composer install --no-dev --no-interaction --no-plugins --no-scripts --prefer-dist
+RUN composer install --no-dev --no-interaction --no-scripts --prefer-dist
 
 # Stage 2: Build application
 FROM php:8.2-fpm
