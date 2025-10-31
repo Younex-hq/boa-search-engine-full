@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM node:20 as build
+FROM node:20 AS build
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 RUN npm run build
 
 # Stage 2: Serve the application
-FROM nginx:alpine
+FROM nginx:alpine AS runner
 
 COPY --from=build /app/dist /usr/share/nginx/html
 

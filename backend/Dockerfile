@@ -1,5 +1,5 @@
 # Stage 1: Install dependencies
-FROM composer:2 as vendor
+FROM composer:2 AS vendor
 
 WORKDIR /app
 
