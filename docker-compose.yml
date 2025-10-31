@@ -75,13 +75,7 @@ services:
     ports :
       - "11434:11434"
     restart : unless-stopped
-    command: 
-      - /bin/sh
-      - -lc
-      - |
-        ollama serve &
-        sleep 3 && ollama pull ${AI_MODEL} || true
-        wait
+    # Use default entrypoint which runs 'ollama serve'
 
   # Web Server (Nginx)
   web:
