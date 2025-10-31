@@ -1,6 +1,6 @@
--- ! Seeder SQL for boa_searchengine_clean database :
+-- ! Seeder SQL for boa_searchengine_d1 database :
 
-USE `boa_searchengine_clean`;
+USE `boa_searchengine_d1`;
 
 -- 1. Directions
 INSERT INTO directions (name, parent_direction_id, location_id, is_active, created_at, updated_at)

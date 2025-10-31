@@ -22,7 +22,7 @@ This document explains how to build, run, and operate the BOA Search Engine stac
 ## Quick Start
 1. Create a root `.env` file (at repository root):
    - Copy `.env.example` to `.env` and update values.
-   - Important: Set `DB_DATABASE=boa_searchengine_clean` to match the seeded database name from `create-database.sql`.
+   - Important: Set `DB_DATABASE=boa_searchengine_d1` to match the seeded database name from `create-database.sql`.
    - Provide DB user and password (choose any, e.g., `boa_user` / `boa_password`).
    - Choose AI source:
      - `AI_SOURCE=ollama` (default for Docker) with `AI_URL=http://ollama:11434/api/chat` and desired `AI_MODEL`.
@@ -30,7 +30,7 @@ This document explains how to build, run, and operate the BOA Search Engine stac
 
    Example `.env`:
    ```env
-   DB_DATABASE=boa_searchengine_clean
+   DB_DATABASE=boa_searchengine_d1
    DB_USERNAME=boa_user
    DB_PASSWORD=boa_password
 
@@ -66,7 +66,7 @@ This document explains how to build, run, and operate the BOA Search Engine stac
 
 ## First‑Run Data & Credentials
 - The MySQL container runs the SQL init scripts on first creation of the data volume:
-  - Creates database `boa_searchengine_clean`.
+  - Creates database `boa_searchengine_d1`.
   - Creates all required tables.
   - Seeds users and basic metadata.
 - Admin account (seeded):
@@ -76,7 +76,7 @@ This document explains how to build, run, and operate the BOA Search Engine stac
   - Email: `notifications@restricted.com`
   - Password: `passwordrestricted`
 
-Note: Set `DB_DATABASE=boa_searchengine_clean` in your root `.env` so the backend connects to the seeded DB.
+Note: Set `DB_DATABASE=boa_searchengine_d1` in your root `.env` so the backend connects to the seeded DB.
 
 ## Backend (Laravel) Operations
 - Generate `APP_KEY` (recommended on first boot):
@@ -185,7 +185,7 @@ Note: Set `DB_DATABASE=boa_searchengine_clean` in your root `.env` so the backen
     ```
 
 - Database name mismatch:
-  - The init SQL seeds `boa_searchengine_clean`. Set `DB_DATABASE` accordingly in root `.env`.
+  - The init SQL seeds `boa_searchengine_d1`. Set `DB_DATABASE` accordingly in root `.env`.
 
 ## Project Structure (key files)
 - `docker-compose.yml`: Orchestrates services and wiring.
