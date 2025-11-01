@@ -1,39 +1,50 @@
-# Stage 1: Install dependencies
-FROM composer:2 AS vendor
+# Use the official PHP CLI image (sufficient to run artisan serve)
+FROM php:8.2-cli
 
-WORKDIR /app
-
-COPY composer.json composer.lock ./
-
-RUN composer install --no-dev --no-interaction --no-scripts --prefer-dist
-
-# Stage 2: Build application
-FROM php:8.2-fpm
-
-WORKDIR /var/www/html
-
-# Install system dependencies
+# Install system dependencies & PHP extensions required by Laravel
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
+    libonig-dev \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libonig-dev \
-    libxml2-dev \
-    && docker-php-ext-install pdo_mysql zip gd mbstring exif pcntl bcmath opcache
+    libicu-dev \
+    default-mysql-client \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql mbstring bcmath zip intl opcache \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy application code
+# Install composer
+COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+# Copy composer files first for cacheable installs
+COPY composer.json composer.lock ./
+
+# Install PHP dependencies
+RUN composer install --no-dev --prefer-dist --no-plugins --no-scripts -q \
+  || composer install --no-interaction --no-scripts
+
+# Copy the rest of the application
 COPY . .
 
-# Copy vendor dependencies
-COPY --from=vendor /app/vendor/ ./vendor/
+# Ensure storage & bootstrap cache dirs exist and are writable
+RUN mkdir -p storage/framework storage/logs bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 0775 storage bootstrap/cache
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Expose API port
+EXPOSE 8800
 
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+# Generate APP_KEY at container start if missing and run artisan serve
+# (The entrypoint handles key generation & optional migrations)
+ENTRYPOINT ["sh", "-c", "\
+  if [ -f .env ]; then \
+    php -r \"file_exists('.env') || copy('.env.example', '.env');\"; \
+  fi; \
+  php artisan key:generate --ansi --force || true; \
+  php artisan migrate --force || true; \
+  php artisan serve --host=0.0.0.0 --port=8800 --no-reload"]
