@@ -21,7 +21,7 @@ authApi.interceptors.response.use(
   (error) => {
     if (
       error.config.url !== "/login" &&
-      (error.response?.status === 500 ||
+      (error.response?.status === 401 ||
         error.response?.data?.message === "Unauthenticated.")
     ) {
       const event = new CustomEvent("logout");

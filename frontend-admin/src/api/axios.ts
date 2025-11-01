@@ -20,7 +20,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (
-      error.response?.status === 500 ||
+      error.response?.status === 401 || // token expired / invalid
       error.response?.data?.message === "Unauthenticated."
     ) {
       const event = new CustomEvent("logout");
