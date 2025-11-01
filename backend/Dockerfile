@@ -21,6 +21,9 @@ COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+# Copy custom PHP config
+COPY php.ini /usr/local/etc/php/conf.d/custom.ini
+
 # Copy composer files first for cacheable installs
 COPY composer.json composer.lock ./
 
