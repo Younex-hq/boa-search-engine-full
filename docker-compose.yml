@@ -28,6 +28,7 @@ services:
       - AI_URL=http://ollama:11434/api/chat
     volumes:
       - ./backend:/var/www/html
+      - /var/www/html/vendor
     depends_on:
       - database
       - ollama
@@ -39,6 +40,9 @@ services:
     build:
       context: ./frontend-admin
       dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_LOGIN_URL: http://backend:8800/api/
+        VITE_API_BASE_URL: http://backend:8800/api/v1
     container_name: boa-frontend-admin
     restart: unless-stopped
     ports:
@@ -53,6 +57,8 @@ services:
     build:
       context: ./frontend-public
       dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://backend:8800/api/v1
     container_name: boa-frontend-public
     restart: unless-stopped
     ports:

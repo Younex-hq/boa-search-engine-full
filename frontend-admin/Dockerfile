@@ -13,6 +13,12 @@ RUN npm install
 # Copy all project files
 COPY . .
 
+ARG VITE_API_BASE_LOGIN_URL
+ARG VITE_API_BASE_URL
+
+RUN echo "VITE_API_BASE_LOGIN_URL=${VITE_API_BASE_LOGIN_URL}" > .env
+RUN echo "VITE_API_BASE_URL=${VITE_API_BASE_URL}" >> .env
+
 # Build the app for production
 RUN npm run build
 
