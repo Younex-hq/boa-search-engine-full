@@ -1,0 +1,106 @@
+version: '3.8'
+
+# This Docker Compose file sets up the development environment for the BoA search engine.
+# It includes services for the backend (Laravel), two frontends (React), a MySQL database,
+# and an Ollama instance for AI-powered features.
+
+services:
+  # Backend service (Laravel API)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: boa-backend
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8800}:8800"
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=database
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - AI_SOURCE=${AI_SOURCE}
+      - AI_MODEL=${AI_MODEL}
+      - GEMINI_MODEL=${GEMINI_MODEL}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - AI_URL=http://ollama:11434/api/chat
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - database
+      - ollama
+    networks:
+      - boa-network
+
+  # Frontend service for the admin panel
+  frontend-admin:
+    build:
+      context: ./frontend-admin
+      dockerfile: Dockerfile
+    container_name: boa-frontend-admin
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_ADMIN_PORT:-9080}:9080"
+    depends_on:
+      - backend
+    networks:
+      - boa-network
+
+  # Frontend service for the public-facing site
+  frontend-public:
+    build:
+      context: ./frontend-public
+      dockerfile: Dockerfile
+    container_name: boa-frontend-public
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PUBLIC_PORT:-9090}:9090"
+    depends_on:
+      - backend
+    networks:
+      - boa-network
+
+  # Database service (MySQL)
+  database:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: boa-database
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - boa-network
+
+  # AI service (Ollama)
+  ollama:
+    image: ollama/ollama
+    container_name: boa-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - boa-network
+
+# Define the network for communication between services
+networks:
+  boa-network:
+    driver: bridge
+
+# Define volumes for persistent data
+volumes:
+  db-data:
+    driver: local
+  ollama-data:
+    driver: local

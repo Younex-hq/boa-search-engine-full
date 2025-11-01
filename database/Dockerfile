@@ -1,8 +1,7 @@
 # Use official MySQL image as base
 FROM mysql:8.0
 
-# Set root password and database name (can be overridden by docker-compose)
-ENV MYSQL_ROOT_PASSWORD=root
+# Set database name (can be overridden by docker-compose)
 ENV MYSQL_DATABASE=boa_searchengine_d1
 
 # Copy your SQL files into the initialization directory
