@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 # This Docker Compose file sets up the development environment for the BoA search engine.
 # It includes services for the backend (Laravel), two frontends (React), a MySQL database,
@@ -41,8 +41,8 @@ services:
       context: ./frontend-admin
       dockerfile: Dockerfile
       args:
-        VITE_API_BASE_LOGIN_URL: http://backend:8800/api/
-        VITE_API_BASE_URL: http://backend:8800/api/v1
+        VITE_API_BASE_LOGIN_URL: http://localhost:${APP_PORT:-8800}/api/
+        VITE_API_BASE_URL: http://localhost:${APP_PORT:-8800}/api/v1
     container_name: boa-frontend-admin
     restart: unless-stopped
     ports:
@@ -58,7 +58,7 @@ services:
       context: ./frontend-public
       dockerfile: Dockerfile
       args:
-        VITE_API_BASE_URL: http://backend:8800/api/v1
+        VITE_API_BASE_URL: http://localhost:${APP_PORT:-8800}/api/v1
     container_name: boa-frontend-public
     restart: unless-stopped
     ports:
