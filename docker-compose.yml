@@ -89,11 +89,17 @@ services:
 
   # AI service (Ollama)
   ollama:
-    image: ollama/ollama
+    build:
+      context: ./ollama
+      dockerfile: Dockerfile
     container_name: boa-ollama
     restart: unless-stopped
     ports:
       - "11434:11434"
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      - AI_SOURCE=${AI_SOURCE}
+      - AI_MODEL=${AI_MODEL}
     volumes:
       - ollama-data:/root/.ollama
     networks:
