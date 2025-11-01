@@ -94,6 +94,13 @@ services:
       dockerfile: Dockerfile
     container_name: boa-ollama
     restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     ports:
       - "11434:11434"
     environment:
